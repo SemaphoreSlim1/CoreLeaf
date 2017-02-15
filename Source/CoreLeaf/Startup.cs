@@ -2,7 +2,7 @@
 
 namespace CoreLeaf
 {
-    class Program
+    public class Startup
     {
         static void Main(string[] args)
         {
