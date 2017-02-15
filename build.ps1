@@ -4,8 +4,8 @@ Import-Module $PSScriptRoot\Build\CoreLeaf.Build.psd1 -Force
 $artifactsPath = "$PSScriptRoot\artifacts"
 $packagesPath = "$artifactsPath\packages"
 
-$appDir = "Source\CoreLeaf"
-$testDir = "Source\CoreLeaf.Tests"
+$appPath = "Source\CoreLeaf"
+$unitTestPath = "Source\CoreLeaf.Tests"
 
 
 Install-DotNetCli -Version Latest
@@ -17,10 +17,12 @@ if(Test-Path $artifactsPath)
 }
 
 # Package restore
-Get-DotNetProjectDirectory -RootPath $PSScriptRoot | Restore-DependencyPackages
+dotnet restore $appPath
+dotnet restore $unitTestPath
 
 # Build
-Get-DotNetProjectDirectory -RootPath $PSScriptRoot | Invoke-DotNetBuild
+dotnet build $appPath
+dotnet build $unitTestPath
 
 # Test
-Get-DotNetProjectDirectory -RootPath $testDir  | Invoke-Test
+dotnet test $unitTestPath\CoreLeaf.Tests.csproj
