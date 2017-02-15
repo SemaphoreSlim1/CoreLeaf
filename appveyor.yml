@@ -5,5 +5,7 @@ configuration: Release
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
+test: off
+
 build_script:
 - ps: .\build.ps1
