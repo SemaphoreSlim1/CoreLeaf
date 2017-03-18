@@ -31,17 +31,39 @@ namespace CoreLeaf.Net
         IContentEncoder ContentEncoder { get; set; }
 
         /// <summary>
-        /// Issues a HTTP GET to the route, uses <see cref="ResponseDeserializer"/> to deserialize to <typeparamref name="TResponse"/>
+        /// Issues a HTTP GET to the route
         /// </summary>
         /// <typeparam name="TResponse">The type of the response</typeparam>
-        /// <param name="route">the route to issue the HTTP Get agains</param>
-        /// <returns></returns>
+        /// <param name="route">the route to issue the HTTP Get against</param>
+        /// <returns>the response from the http endpoint</returns>
         Task<TResponse> GetAsync<TResponse>(string route);
 
+        /// <summary>
+        /// Issues a HTTP PUT to the route
+        /// </summary>
+        /// <typeparam name="TRequest">the type of the request</typeparam>
+        /// <typeparam name="TResponse">the type of the repsonse</typeparam>
+        /// <param name="route">the route to issue the HTTP PUT against</param>
+        /// <param name="body">The body of the request</param>
+        /// <returns>the response from the http endpoint</returns>
         Task<TResponse> PutAsync<TRequest, TResponse>(string route, TRequest body);
 
+        /// <summary>
+        /// Issues a HTTP POST to the route
+        /// </summary>
+        /// <typeparam name="TRequest">the type of the request</typeparam>
+        /// <typeparam name="TResponse">the type of the response</typeparam>
+        /// <param name="route">The route to issue the HTTP POST against</param>
+        /// <param name="body">the body of the request</param>
+        /// <returns>the response from the http endpoint</returns>
         Task<TResponse> PostAsync<TRequest, TResponse>(string route, TRequest body);
 
+        /// <summary>
+        /// Issues a HTTP DELETE to the route
+        /// </summary>
+        /// <typeparam name="TResponse">the type of the response</typeparam>
+        /// <param name="route">the route to issue the HTTP DELETE against</param>
+        /// <returns>the response from the http endpoint</returns>
         Task<TResponse> DeleteAsync<TResponse>(string route);
     }
 }
