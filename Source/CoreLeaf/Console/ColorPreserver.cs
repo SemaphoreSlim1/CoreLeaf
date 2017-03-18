@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CoreLeaf.Console
 {
-    public delegate IColorPreserver ColorPreserverFactory(IConsole console);
-
     public class ColorPreserver : IColorPreserver
     {
         public ConsoleColor Background { get; private set; }

@@ -6,8 +6,8 @@ namespace CoreLeaf.Console
 {
     public class ConsoleHelper : IConsole
     {
-        private Func<ICursorPreserver> _cursorPreserverFactory;
-        private Func<IColorPreserver> _colorPreserverFactory;
+        private Func<IConsole, ICursorPreserver> _cursorPreserverFactory;
+        private Func<IConsole, IColorPreserver> _colorPreserverFactory;
         private CancellationTokenSource _cancellationTokenSource;
 
         public int CursorTop
@@ -34,7 +34,7 @@ namespace CoreLeaf.Console
             set { System.Console.BackgroundColor = value; }
         }
 
-        public ConsoleHelper(Func<IColorPreserver> colorPreserverFactory, Func<ICursorPreserver> cursorPreserverFactory)
+        public ConsoleHelper(Func<IConsole,IColorPreserver> colorPreserverFactory, Func<IConsole,ICursorPreserver> cursorPreserverFactory)
         {
             _cursorPreserverFactory = cursorPreserverFactory;
             _colorPreserverFactory = colorPreserverFactory;
@@ -49,12 +49,12 @@ namespace CoreLeaf.Console
 
         public IDisposable PreserveCursorPosition()
         {
-            return _cursorPreserverFactory();
+            return _cursorPreserverFactory(this);
         }
 
         public IDisposable PreserveColor()
         {
-            return _colorPreserverFactory();
+            return _colorPreserverFactory(this);
         }
 
         public CancellationToken GetCancelToken()
