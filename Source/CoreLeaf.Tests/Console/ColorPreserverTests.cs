@@ -1,8 +1,6 @@
 ﻿using CoreLeaf.Console;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace CoreLeaf.Tests.Console
