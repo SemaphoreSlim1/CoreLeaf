@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoreLeaf.Console
+﻿namespace CoreLeaf.Console
 {
-    public delegate ICursorPreserver CursorPreserverFactory(IConsole console);
-
     public class CursorPreserver : ICursorPreserver
     {
         public int Top { get; private set; }

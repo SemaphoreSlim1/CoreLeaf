@@ -6,7 +6,8 @@ namespace CoreLeaf
     {
         static void Main(string[] args)
         {
-            System.Console.WriteLine("Hello World!");
+            var bs = new Bootstrapper();
+            bs.Run(args);
         }
     }
 }
