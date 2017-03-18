@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using CoreLeaf.Console;
+using CoreLeaf.Encryption;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,6 +15,8 @@ namespace CoreLeaf
             var builder = new ContainerBuilder();
 
             builder.RegisterType<App>();
+
+            builder.RegisterType<Blowfish>().As<IBlowfish>();
 
             builder.RegisterType<ConsoleHelper>().As<IConsole>().SingleInstance();
             builder.RegisterType<CursorPreserver>().As<ICursorPreserver>();
