@@ -2,6 +2,8 @@
 using CoreLeaf.Console;
 using CoreLeaf.Encryption;
 using CoreLeaf.Net;
+using CoreLeaf.NissanApi.Countries;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
@@ -14,22 +16,31 @@ namespace CoreLeaf
         {
             var builder = new ContainerBuilder();
 
+            //build the configuration
+            var configBuilder = new ConfigurationBuilder()
+                            .AddJsonFile("appSettings.json");
+
+            builder.RegisterInstance(configBuilder.Build()).As<IConfiguration>();
+
+            //build the app
             builder.RegisterType<App>();
 
+            //crypto
             builder.RegisterType<Blowfish>().As<IBlowfish>();
 
             //register the console types
             builder.RegisterType<ConsoleHelper>().As<IConsole>().SingleInstance();
-            builder.RegisterType<CursorPreserver>().As<ICursorPreserver>();
-            builder.RegisterType<ColorPreserver>().As<IColorPreserver>();
+            
 
             //register the REST types
-            //register the rest types
             builder.RegisterType<HttpClientHandler>().As<HttpMessageHandler>();
             builder.RegisterType<RestClient>().As<IRestClient>();
             builder.RegisterType<DefaultHeaderProvider>().As<IHeaderProvider>().SingleInstance();
             builder.RegisterType<FormUrlContentEncoder>().As<IContentEncoder>().SingleInstance();
             builder.RegisterType<JsonResponseDeserializer>().As<IResponseDeserializer>().SingleInstance();
+
+            //register the country client
+            builder.RegisterType<CountryClient>().As<ICountryClient>();
 
             return builder.Build();
         }

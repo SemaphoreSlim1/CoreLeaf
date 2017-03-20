@@ -1,4 +1,5 @@
 ﻿using CoreLeaf.Console;
+using CoreLeaf.NissanApi.Countries;
 using System;
 using System.Threading.Tasks;
 
@@ -7,15 +8,27 @@ namespace CoreLeaf
     public class App
     {
         private IConsole _console;
-        public App(IConsole console)
+        private ICountryClient _countryClient;
+
+        public App(IConsole console, ICountryClient countryClient)
         {
             _console = console;
+            _countryClient = countryClient;
         }
 
         public async Task Run(string[] args)
         {
-            var initialAppString = _console.ReadLine("Initial App String", ConsoleColor.Yellow);
+            var apiKey = _console.ReadLine("Nissan API Key", ConsoleColor.Yellow);
+
+            using (_console.PreserveCursorTop())
+            {
+                _console.Write("Getting settings");
+            }
+
+            var settings = await _countryClient.GetSettingsAsync(apiKey, _console.CancelToken);
             
+            _console.ClearLine();
+            _console.WriteLine("Retrieved settings");
         }
     }
 }

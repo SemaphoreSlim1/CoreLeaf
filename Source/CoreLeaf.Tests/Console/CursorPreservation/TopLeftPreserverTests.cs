@@ -1,14 +1,15 @@
 ﻿using CoreLeaf.Console;
+using CoreLeaf.Console.CursorPreservation;
 using Moq;
 using Xunit;
 
-namespace CoreLeaf.Tests.Console
+namespace CoreLeaf.Tests.Console.CursorPreservation
 {
-    public class CursorPreserverTests
+    public class TopLeftPreserverTests
     {
         [Theory]
         [InlineData(1,2)]
-        public void CursorPreserver_Dispose_RestoresLeft(int originalLeft, int newLeft)
+        public void TopLeftPreserver_Dispose_RestoresLeft(int originalLeft, int newLeft)
         {
             //arrange
             var consoleMock = new Mock<IConsole>();
@@ -19,7 +20,7 @@ namespace CoreLeaf.Tests.Console
             console.CursorLeft = originalLeft;
 
             //"preserve" the position
-            var cp = new CursorPreserver(console);
+            var cp = new TopLeftPreserver(console);
 
             //alter the position
             console.CursorLeft = newLeft;
@@ -34,7 +35,7 @@ namespace CoreLeaf.Tests.Console
 
         [Theory]
         [InlineData(1, 2)]
-        public void CursorPreserver_Dispose_RestoresTop(int originalTop, int newTop)
+        public void TopLeftPreserver_Dispose_RestoresTop(int originalTop, int newTop)
         {
             //arrange
             var consoleMock = new Mock<IConsole>();
@@ -45,7 +46,7 @@ namespace CoreLeaf.Tests.Console
             console.CursorTop = originalTop;
 
             //"preserve" the position
-            var cp = new CursorPreserver(console);
+            var cp = new TopLeftPreserver(console);
 
             //alter the position
             console.CursorTop = newTop;

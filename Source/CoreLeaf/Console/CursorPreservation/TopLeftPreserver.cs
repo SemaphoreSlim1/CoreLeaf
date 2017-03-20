@@ -1,14 +1,16 @@
-﻿namespace CoreLeaf.Console
+﻿using System;
+
+namespace CoreLeaf.Console.CursorPreservation
 {
-    public class CursorPreserver : ICursorPreserver
+    public class TopLeftPreserver : IDisposable
     {
-        public int Top { get; private set; }
-
-        public int Left { get; private set; }
-
         private IConsole _console;
 
-        public CursorPreserver(IConsole console)
+        public int Top { get; private set; }
+
+        public int Left { get; private set; }              
+
+        public TopLeftPreserver(IConsole console)
         {
             _console = console;
             Top = _console.CursorTop;

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CoreLeaf.Console.ColorPreservation;
+using CoreLeaf.Console.CursorPreservation;
+using System;
 using System.Text;
 using System.Threading;
 
@@ -6,8 +8,6 @@ namespace CoreLeaf.Console
 {
     public class ConsoleHelper : IConsole
     {
-        private Func<IConsole, ICursorPreserver> _cursorPreserverFactory;
-        private Func<IConsole, IColorPreserver> _colorPreserverFactory;
         private CancellationTokenSource _cancellationTokenSource;
 
         public CancellationToken CancelToken
@@ -39,10 +39,8 @@ namespace CoreLeaf.Console
             set { System.Console.BackgroundColor = value; }
         }
 
-        public ConsoleHelper(Func<IConsole, IColorPreserver> colorPreserverFactory, Func<IConsole, ICursorPreserver> cursorPreserverFactory)
+        public ConsoleHelper()
         {
-            _cursorPreserverFactory = cursorPreserverFactory;
-            _colorPreserverFactory = colorPreserverFactory;
             _cancellationTokenSource = new CancellationTokenSource();
 
             //set up the cancel keypress to flag the token
@@ -52,31 +50,76 @@ namespace CoreLeaf.Console
                 e.Cancel = true;
             };
         }
+        #region Preserve cursor
 
-        public IDisposable PreserveCursorPosition()
+        public IDisposable PreserveCursor()
         {
-            return _cursorPreserverFactory(this);
+            return new TopLeftPreserver(this);
         }
+
+        /// <summary>
+        /// Preserves only the top position of the cursor. To restore, dispose the returned object
+        /// </summary>
+        /// <returns>The preserved position</returns>
+        public IDisposable PreserveCursorTop()
+        {
+            return new TopPreserver(this);
+
+        }
+
+        /// <summary>
+        /// Preserves only the left position of the cursor. To restore, dispose the returned object
+        /// </summary>
+        /// <returns>The preserved position</returns>
+        public IDisposable PreserveCursorLeft()
+        {
+            return new LeftPreserver(this);
+        }
+
+        #endregion
+
+        #region Preserve Color
 
         public IDisposable PreserveColor()
         {
-            return _colorPreserverFactory(this);
+            return new ForegroundBackgroundPreserver(this);
         }
 
-        public void ClearLine()
+        public IDisposable PreserveForeground()
         {
-            ClearLine(CursorTop);
+            return new ForegroundPreserver(this);
         }
 
-        public void ClearLine(int lineNumber)
+        public IDisposable PreserveBackground()
         {
-            using (PreserveCursorPosition())
+            return new BackgroundPreserver(this);
+        }
+
+        #endregion
+
+        #region clear line
+
+        public void ClearLine(bool setLeftToZero = true)
+        {
+            ClearLine(CursorTop, setLeftToZero);
+        }
+
+        public void ClearLine(int lineNumber, bool setLeftToZero = true)
+        {
+            using (PreserveCursor())
             {
                 CursorLeft = 0;
                 CursorTop = lineNumber;
                 Write(new string(' ', System.Console.WindowWidth));
             }
+
+            if (setLeftToZero)
+            {
+                CursorLeft = 0;
+            }
         }
+
+        #endregion
 
         #region Write
 
@@ -107,7 +150,7 @@ namespace CoreLeaf.Console
 
         public void WriteLine()
         {
-            Write(string.Empty, Foreground, Background);
+            WriteLine(string.Empty, Foreground, Background);
         }
 
         public void WriteLine(string message)

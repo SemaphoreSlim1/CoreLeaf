@@ -31,28 +31,66 @@ namespace CoreLeaf.Console
         /// </summary>
         ConsoleColor Background { get; set; }
 
-        /// <summary>
-        /// Preserves the current position of the cursor. To restore the position, dispose the returned object
-        /// </summary>
-        /// <returns>The preserved position</returns>
-        IDisposable PreserveCursorPosition();
+        #region Preserve cursor
 
         /// <summary>
-        /// Preserves the current colors of the console. To restore, dispose the returned object
+        /// Preserves the current top and left position of the cursor. To restore the position, dispose the returned object
+        /// </summary>
+        /// <returns>The preserved position</returns>
+        IDisposable PreserveCursor();
+
+        /// <summary>
+        /// Preserves only the top position of the cursor. To restore, dispose the returned object
+        /// </summary>
+        /// <returns>The preserved position</returns>
+        IDisposable PreserveCursorTop();
+
+        /// <summary>
+        /// Preserves only the left position of the cursor. To restore, dispose the returned object
+        /// </summary>
+        /// <returns>The preserved position</returns>
+        IDisposable PreserveCursorLeft();
+
+        #endregion
+
+        #region Preserve color
+
+        /// <summary>
+        /// Preserves the foreground and background colors of the console. To restore, dispose the returned object
         /// </summary>
         /// <returns>The preserved colors</returns>
         IDisposable PreserveColor();
 
         /// <summary>
+        /// Preserves the foreground colors of the console. To restore, dispose the returned object.
+        /// </summary>
+        /// <returns>The preserved color</returns>
+        IDisposable PreserveForeground();
+
+        /// <summary>
+        /// Preserves the background color of the console. To restore, dispose the returned object.
+        /// </summary>
+        /// <returns>The preserved color</returns>
+        IDisposable PreserveBackground();
+
+        #endregion
+
+        #region Clear Line
+
+        /// <summary>
         /// Clears the current line
         /// </summary>
-        void ClearLine();
+        /// <param name="setLeftToZero">Sets the cursor left to zero after clearing the line, or leaves it alone if false</param>
+        void ClearLine(bool setLeftToZero = true);
 
         /// <summary>
         /// Clears the specified line
         /// </summary>
         /// <param name="lineNumber">The line to clear</param>
-        void ClearLine(int lineNumber);        
+        /// <param name="setLeftToZero">Sets the cursor left to zero after clearing the line, or leaves it alone if false</param>
+        void ClearLine(int lineNumber, bool setLeftToZero = true);
+
+        #endregion
 
         #region Write
 
