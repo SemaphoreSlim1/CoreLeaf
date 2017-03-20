@@ -20,7 +20,8 @@ namespace CoreLeaf
 
             //build the configuration
             var configBuilder = new ConfigurationBuilder()
-                            .AddJsonFile("appSettings.json");
+                            .AddJsonFile("appSettings.json")
+                            .AddJsonFile("appSecrets.json");
 
             builder.RegisterInstance(configBuilder.Build()).As<IConfiguration>();
 
