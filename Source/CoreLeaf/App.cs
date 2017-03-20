@@ -19,16 +19,8 @@ namespace CoreLeaf
         public async Task Run(string[] args)
         {
             var apiKey = _console.ReadLine("Nissan API Key", ConsoleColor.Yellow);
-
-            using (_console.PreserveCursorTop())
-            {
-                _console.Write("Getting settings");
-            }
-
-            var settings = await _countryClient.GetSettingsAsync(apiKey, _console.CancelToken);
-            
-            _console.ClearLine();
-            _console.WriteLine("Retrieved settings");
+           
+            var settings = await _countryClient.GetSettingsAsync(apiKey, _console.CancelToken);                       
         }
     }
 }

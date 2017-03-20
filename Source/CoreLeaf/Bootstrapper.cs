@@ -1,6 +1,8 @@
 ﻿using Autofac;
+using Autofac.Extras.DynamicProxy;
 using CoreLeaf.Console;
 using CoreLeaf.Encryption;
+using CoreLeaf.Interception;
 using CoreLeaf.Net;
 using CoreLeaf.NissanApi.Countries;
 using Microsoft.Extensions.Configuration;
@@ -30,7 +32,8 @@ namespace CoreLeaf
 
             //register the console types
             builder.RegisterType<ConsoleHelper>().As<IConsole>().SingleInstance();
-            
+
+            builder.RegisterType<ConsoleInterceptor>();
 
             //register the REST types
             builder.RegisterType<HttpClientHandler>().As<HttpMessageHandler>();
@@ -40,8 +43,10 @@ namespace CoreLeaf
             builder.RegisterType<JsonResponseDeserializer>().As<IResponseDeserializer>().SingleInstance();
 
             //register the country client
-            builder.RegisterType<CountryClient>().As<ICountryClient>();
-
+            builder.RegisterType<CountryClient>().As<ICountryClient>()
+                .EnableInterfaceInterceptors()
+                .InterceptedBy(typeof(ConsoleInterceptor));
+            
             return builder.Build();
         }
 
@@ -65,6 +70,11 @@ namespace CoreLeaf
                 console.WriteLine();
                 console.WriteLine("Exiting application - user intentionally cancelled", ConsoleColor.Yellow);
 
+            }
+            catch(AggregateException ex)
+            {
+                console.WriteLine();
+                console.WriteLine(ex.InnerException.Message, ConsoleColor.Red);
             }
             catch (Exception ex)
             {
