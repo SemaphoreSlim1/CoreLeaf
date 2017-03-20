@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CoreLeaf.Interception
 {
+    /// <summary>
+    /// When intercepted, the message that should be written out before execution
+    /// </summary>
     [System.AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public sealed class BeforeMessageAttribute : Attribute
     {
