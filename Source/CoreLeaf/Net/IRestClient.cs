@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CoreLeaf.Net
@@ -35,8 +36,9 @@ namespace CoreLeaf.Net
         /// </summary>
         /// <typeparam name="TResponse">The type of the response</typeparam>
         /// <param name="route">the route to issue the HTTP Get against</param>
+        /// <param name="cancelToken">A cancellation token that can be used by other threads to signal cancellation</param>
         /// <returns>the response from the http endpoint</returns>
-        Task<TResponse> Get<TResponse>(string route);
+        Task<TResponse> GetAsync<TResponse>(string route, CancellationToken cancelToken);
 
         /// <summary>
         /// Issues a HTTP PUT to the route
@@ -45,8 +47,9 @@ namespace CoreLeaf.Net
         /// <typeparam name="TResponse">the type of the repsonse</typeparam>
         /// <param name="route">the route to issue the HTTP PUT against</param>
         /// <param name="body">The body of the request</param>
+        /// <param name="cancelToken">A cancellation token that can be used by other threads to signal cancellation</param>
         /// <returns>the response from the http endpoint</returns>
-        Task<TResponse> Put<TRequest, TResponse>(string route, TRequest body);
+        Task<TResponse> PutAsync<TRequest, TResponse>(string route, TRequest body, CancellationToken cancelToken);
 
         /// <summary>
         /// Issues a HTTP POST to the route
@@ -55,15 +58,17 @@ namespace CoreLeaf.Net
         /// <typeparam name="TResponse">the type of the response</typeparam>
         /// <param name="route">The route to issue the HTTP POST against</param>
         /// <param name="body">the body of the request</param>
+        /// <param name="cancelToken">A cancellation token that can be used by other threads to signal cancellation</param>
         /// <returns>the response from the http endpoint</returns>
-        Task<TResponse> Post<TRequest, TResponse>(string route, TRequest body);
+        Task<TResponse> PostAsync<TRequest, TResponse>(string route, TRequest body, CancellationToken cancelToken);
 
         /// <summary>
         /// Issues a HTTP DELETE to the route
         /// </summary>
         /// <typeparam name="TResponse">the type of the response</typeparam>
         /// <param name="route">the route to issue the HTTP DELETE against</param>
+        /// <param name="cancelToken">A cancellation token that can be used by other threads to signal cancellation</param>
         /// <returns>the response from the http endpoint</returns>
-        Task<TResponse> Delete<TResponse>(string route);
+        Task<TResponse> DeleteAsync<TResponse>(string route, CancellationToken cancelToken);
     }
 }

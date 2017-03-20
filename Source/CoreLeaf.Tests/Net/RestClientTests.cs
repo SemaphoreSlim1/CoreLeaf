@@ -2,10 +2,8 @@
 using Moq;
 using Moq.Protected;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -26,8 +24,6 @@ namespace CoreLeaf.Tests.Net
 
         private Func<HttpMessageHandler> GenerateHandlerFactory(int expectedResponse, Action<HttpRequestMessage> callbackAction)
         {
-            HttpMessageHandler handler;
-            
             var handlerMock = new Mock<HttpMessageHandler>();
             handlerMock.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
@@ -51,7 +47,7 @@ namespace CoreLeaf.Tests.Net
         private IResponseDeserializer CreateDeserializerStub()
         {
             var mock = new Mock<IResponseDeserializer>();
-            mock.Setup(x => x.Deserialize<int>(It.IsAny<HttpResponseMessage>()))
+            mock.Setup(x => x.DeserializeAsync<int>(It.IsAny<HttpResponseMessage>()))
                 .Returns(async (HttpResponseMessage msg) => {
                     var content = await msg.Content.ReadAsStringAsync();
                     return Convert.ToInt32(content);
@@ -100,7 +96,7 @@ namespace CoreLeaf.Tests.Net
             var client = CreateRestClient(handlerFactory);       
 
             //act
-            var actualResponse = await client.Get<int>("api/UnitTest");
+            var actualResponse = await client.GetAsync<int>("api/UnitTest", CancellationToken.None);
 
             AssertExecution(request, actualResponse, expectation);            
         }
@@ -125,7 +121,7 @@ namespace CoreLeaf.Tests.Net
             var client = CreateRestClient(handlerFactory);
 
             //act
-            var response = await client.Put<int,int>("api/UnitTest",requestValue);
+            var response = await client.PutAsync<int,int>("api/UnitTest",requestValue, CancellationToken.None);
 
             AssertExecution(request, response, expectation);
         }
@@ -149,7 +145,7 @@ namespace CoreLeaf.Tests.Net
             var client = CreateRestClient(handlerFactory);
 
             //act
-            var response = await client.Post<int, int>("api/UnitTest", requestValue);
+            var response = await client.PostAsync<int, int>("api/UnitTest", requestValue, CancellationToken.None);
 
             AssertExecution(request, response, expectation);
         }
@@ -173,7 +169,7 @@ namespace CoreLeaf.Tests.Net
             var client = CreateRestClient(handlerFactory);
 
             //act
-            var actualResponse = await client.Delete<int>("api/UnitTest");
+            var actualResponse = await client.DeleteAsync<int>("api/UnitTest", CancellationToken.None);
 
             AssertExecution(request, actualResponse, expectation);
         }

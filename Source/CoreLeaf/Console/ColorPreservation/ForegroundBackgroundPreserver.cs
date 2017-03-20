@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CoreLeaf.Console
+namespace CoreLeaf.Console.ColorPreservation
 {
-    public class ColorPreserver : IColorPreserver
+    public class ForegroundBackgroundPreserver : IDisposable
     {
         public ConsoleColor Background { get; private set; }
 
@@ -10,7 +10,7 @@ namespace CoreLeaf.Console
 
         private IConsole _console;
 
-        public ColorPreserver(IConsole console)
+        public ForegroundBackgroundPreserver(IConsole console)
         {
             _console = console;
             Background = _console.Background;

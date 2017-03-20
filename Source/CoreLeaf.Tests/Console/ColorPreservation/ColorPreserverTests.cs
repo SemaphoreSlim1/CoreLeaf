@@ -1,4 +1,5 @@
 ﻿using CoreLeaf.Console;
+using CoreLeaf.Console.ColorPreservation;
 using Moq;
 using System;
 using Xunit;
@@ -20,7 +21,7 @@ namespace CoreLeaf.Tests.Console
             console.Background = originalColor;
 
             //"preserve" the colors
-            var cp = new ColorPreserver(console);
+            var cp = new ForegroundBackgroundPreserver(console);
 
             //set the new color
             console.Background = newColor;
@@ -46,7 +47,7 @@ namespace CoreLeaf.Tests.Console
             console.Foreground = originalColor;
 
             //"preserve" the colors
-            var cp = new ColorPreserver(console);
+            var cp = new ForegroundBackgroundPreserver(console);
 
             //set the new color
             console.Foreground = newColor;
