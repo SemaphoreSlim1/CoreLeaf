@@ -13,7 +13,7 @@ namespace CoreLeaf.Net
             _settings = new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace };
         }
         
-        public async Task<TResponse> Deserialize<TResponse>(HttpResponseMessage response)
+        public async Task<TResponse> DeserializeAsync<TResponse>(HttpResponseMessage response)
         {
             var responseString = await response.Content.ReadAsStringAsync();
 

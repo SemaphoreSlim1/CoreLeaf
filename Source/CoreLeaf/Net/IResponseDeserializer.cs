@@ -5,6 +5,6 @@ namespace CoreLeaf.Net
 {
     public interface IResponseDeserializer
     {
-        Task<TResponse> Deserialize<TResponse>(HttpResponseMessage response);
+        Task<TResponse> DeserializeAsync<TResponse>(HttpResponseMessage response);
     }
 }

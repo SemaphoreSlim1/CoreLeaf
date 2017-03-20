@@ -52,40 +52,40 @@ namespace CoreLeaf.Net
             return client;
         }
 
-        public async Task<TResponse> Get<TResponse>(string route)
+        public async Task<TResponse> GetAsync<TResponse>(string route)
         {
             var client = SetupClient();
             var rawResponse = await client.GetAsync(route);
-            var response = await ResponseDeserializer.Deserialize<TResponse>(rawResponse);
+            var response = await ResponseDeserializer.DeserializeAsync<TResponse>(rawResponse);
             return response;
         }
 
-        public async Task<TResponse> Put<TRequest, TResponse>(string route, TRequest body)
+        public async Task<TResponse> PutAsync<TRequest, TResponse>(string route, TRequest body)
         {
             var client = SetupClient();
 
             var content = ContentEncoder.Encode(body);
             var rawResponse = await client.PutAsync(route, content);
-            var response = await ResponseDeserializer.Deserialize<TResponse>(rawResponse);
+            var response = await ResponseDeserializer.DeserializeAsync<TResponse>(rawResponse);
             return response;
         }
 
-        public async Task<TResponse> Post<TRequest, TResponse>(string route, TRequest body)
+        public async Task<TResponse> PostAsync<TRequest, TResponse>(string route, TRequest body)
         {
             var client = SetupClient();
 
             var content = ContentEncoder.Encode(body);
             var rawResponse = await client.PostAsync(route, content);
-            var response = await ResponseDeserializer.Deserialize<TResponse>(rawResponse);
+            var response = await ResponseDeserializer.DeserializeAsync<TResponse>(rawResponse);
             return response;
 
         }
 
-        public async Task<TResponse> Delete<TResponse>(string route)
+        public async Task<TResponse> DeleteAsync<TResponse>(string route)
         {
             var client = SetupClient();
             var rawResponse = await client.DeleteAsync(route);
-            var response = await ResponseDeserializer.Deserialize<TResponse>(rawResponse);
+            var response = await ResponseDeserializer.DeserializeAsync<TResponse>(rawResponse);
             return response;
         }
     }
