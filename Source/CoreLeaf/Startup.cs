@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CoreLeaf
+﻿namespace CoreLeaf
 {
     public class Startup
     {

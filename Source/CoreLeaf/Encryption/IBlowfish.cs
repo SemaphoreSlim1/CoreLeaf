@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoreLeaf.Encryption
+﻿namespace CoreLeaf.Encryption
 {
     public interface IBlowfish
     {
