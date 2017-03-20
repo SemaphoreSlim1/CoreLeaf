@@ -59,6 +59,7 @@ namespace CoreLeaf.Net
             var response = await ResponseDeserializer.Deserialize<TResponse>(rawResponse);
             return response;
         }
+
         public async Task<TResponse> Put<TRequest, TResponse>(string route, TRequest body)
         {
             var client = SetupClient();
