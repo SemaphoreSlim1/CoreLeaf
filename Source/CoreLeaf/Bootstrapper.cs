@@ -46,7 +46,7 @@ namespace CoreLeaf
             builder.RegisterType<CountryClient>().As<ICountryClient>()
                 .EnableInterfaceInterceptors()
                 .InterceptedBy(typeof(ConsoleInterceptor));
-            
+
             return builder.Build();
         }
 
@@ -69,9 +69,8 @@ namespace CoreLeaf
                 //do nothing, the user intentionally cancelled
                 console.WriteLine();
                 console.WriteLine("Exiting application - user intentionally cancelled", ConsoleColor.Yellow);
-
             }
-            catch(AggregateException ex)
+            catch (AggregateException ex)
             {
                 console.WriteLine();
                 console.WriteLine(ex.InnerException.Message, ConsoleColor.Red);
