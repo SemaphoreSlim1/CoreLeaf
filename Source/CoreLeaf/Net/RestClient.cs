@@ -27,7 +27,7 @@ namespace CoreLeaf.Net
             HeaderProvider = headerProvider;
             ContentEncoder = contentEncoder;
             ResponseDeserializer = responseDeserializer;
-            Timeout = TimeSpan.FromSeconds(30);
+            Timeout = TimeSpan.FromSeconds(2);
         }
 
         protected HttpClient SetupClient()
