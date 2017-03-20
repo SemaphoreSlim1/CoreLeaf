@@ -37,25 +37,27 @@ namespace CoreLeaf
         public void Run(string[] args)
         {
             var container = ConfigureContainer();
-            
+
             var console = container.Resolve<IConsole>();
-            var cancelToken = console.GetCancelToken();
+            var cancelToken = console.CancelToken;
 
             var app = container.Resolve<App>();
-            
+
             try
             {
                 app.Run(args).Wait(cancelToken);
 
-            }catch(OperationCanceledException ex)
+            }
+            catch (OperationCanceledException ex)
             {
                 //do nothing, the user intentionally cancelled
-                console.WriteLine(string.Empty);
+                console.WriteLine();
                 console.WriteLine("Exiting application - user intentionally cancelled", ConsoleColor.Yellow);
+
             }
             catch (Exception ex)
             {
-                console.WriteLine(string.Empty);
+                console.WriteLine();
                 console.WriteLine(ex.Message, ConsoleColor.Red);
             }
             finally
@@ -63,6 +65,7 @@ namespace CoreLeaf
                 if (Debugger.IsAttached)
                 {
                     //allow the dev to see what happend before completing and closing the window
+                    console.Write("Program complete. Press enter to exit.", ConsoleColor.Green);
                     console.ReadLine();
                 }
             }

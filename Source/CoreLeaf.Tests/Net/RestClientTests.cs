@@ -26,8 +26,6 @@ namespace CoreLeaf.Tests.Net
 
         private Func<HttpMessageHandler> GenerateHandlerFactory(int expectedResponse, Action<HttpRequestMessage> callbackAction)
         {
-            HttpMessageHandler handler;
-            
             var handlerMock = new Mock<HttpMessageHandler>();
             handlerMock.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())

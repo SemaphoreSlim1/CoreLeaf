@@ -10,6 +10,11 @@ namespace CoreLeaf.Console
         private Func<IConsole, IColorPreserver> _colorPreserverFactory;
         private CancellationTokenSource _cancellationTokenSource;
 
+        public CancellationToken CancelToken
+        {
+            get { return _cancellationTokenSource.Token; }
+        }
+
         public int CursorTop
         {
             get { return System.Console.CursorTop; }
@@ -34,14 +39,15 @@ namespace CoreLeaf.Console
             set { System.Console.BackgroundColor = value; }
         }
 
-        public ConsoleHelper(Func<IConsole,IColorPreserver> colorPreserverFactory, Func<IConsole,ICursorPreserver> cursorPreserverFactory)
+        public ConsoleHelper(Func<IConsole, IColorPreserver> colorPreserverFactory, Func<IConsole, ICursorPreserver> cursorPreserverFactory)
         {
             _cursorPreserverFactory = cursorPreserverFactory;
             _colorPreserverFactory = colorPreserverFactory;
             _cancellationTokenSource = new CancellationTokenSource();
 
             //set up the cancel keypress to flag the token
-            System.Console.CancelKeyPress += (s, e) => {
+            System.Console.CancelKeyPress += (s, e) =>
+            {
                 _cancellationTokenSource.Cancel();
                 e.Cancel = true;
             };
@@ -55,11 +61,6 @@ namespace CoreLeaf.Console
         public IDisposable PreserveColor()
         {
             return _colorPreserverFactory(this);
-        }
-
-        public CancellationToken GetCancelToken()
-        {
-            return _cancellationTokenSource.Token;
         }
 
         public void ClearLine()
@@ -77,30 +78,101 @@ namespace CoreLeaf.Console
             }
         }
 
-        public void Write(string message, ConsoleColor foregroundColor = ConsoleColor.Gray)
+        #region Write
+
+        public void Write(string message)
+        {
+            Write(message, Foreground, Background);
+        }
+
+        public void Write(string message, ConsoleColor foreground)
+        {
+            Write(message, foreground, Background);
+        }
+
+        public void Write(string message, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
         {
             using (PreserveColor())
             {
                 Foreground = foregroundColor;
+                Background = backgroundColor;
+
                 System.Console.Write(message);
             }
         }
 
-        public void WriteLine(string message, ConsoleColor foregroundColor = ConsoleColor.Gray)
+        #endregion
+
+        #region WriteLine
+
+        public void WriteLine()
+        {
+            Write(string.Empty, Foreground, Background);
+        }
+
+        public void WriteLine(string message)
+        {
+            WriteLine(message, Foreground, Background);
+        }
+
+        /// <summary>
+        /// Writes a message to the console followed by a newline
+        /// </summary>
+        /// <param name="message">The message to write</param>
+        /// <param name="foreground">The foreground color to use</param>
+        public void WriteLine(string message, ConsoleColor foreground)
+        {
+            WriteLine(message, foreground, Background);
+        }
+
+        public void WriteLine(string message, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
         {
             using (PreserveColor())
             {
                 Foreground = foregroundColor;
+                Background = backgroundColor;
                 System.Console.WriteLine(message);
             }
         }
 
-        public string ReadLine()
+        #endregion
+
+        #region ReadLine
+
+        public string ReadLine(bool mask = false)
         {
+            return ReadLine(string.Empty, Foreground, Background, mask);
+        }
+
+        public string ReadLine(string prompt, bool mask = false)
+        {
+            return ReadLine(prompt, Foreground, Background, mask);
+        }
+
+        public string ReadLine(string prompt, ConsoleColor foreground, bool mask = false)
+        {
+            return ReadLine(prompt, foreground, Background, mask);
+        }
+
+        public string ReadLine(string prompt, ConsoleColor foreground, ConsoleColor background, bool mask = false)
+        {
+            if (string.IsNullOrWhiteSpace(prompt) == false)
+            {
+                using (PreserveColor())
+                {
+                    Foreground = foreground;
+                    Background = background;
+                    Write($"{prompt}: ");
+                }
+            }
+
+            if (mask)
+            { return ReadMasked(); }
+
             return System.Console.ReadLine();
         }
 
-        public string ReadHiddenContent()
+        private string ReadMasked()
         {
             var content = new StringBuilder();
 
@@ -126,5 +198,7 @@ namespace CoreLeaf.Console
             WriteLine(string.Empty);
             return content.ToString();
         }
+
+        #endregion
     }
 }

@@ -14,13 +14,8 @@ namespace CoreLeaf
 
         public async Task Run(string[] args)
         {
-            using (_console.PreserveColor())
-            using (_console.PreserveCursorPosition())
-            {
-                _console.CursorLeft += 5;
-                _console.CursorTop += 1;
-                _console.WriteLine("Hello World!", ConsoleColor.Green);
-            }
+            var initialAppString = _console.ReadLine("Initial App String", ConsoleColor.Yellow);
+            
         }
     }
 }
