@@ -36,7 +36,7 @@ namespace CoreLeaf.Net
         /// <typeparam name="TResponse">The type of the response</typeparam>
         /// <param name="route">the route to issue the HTTP Get against</param>
         /// <returns>the response from the http endpoint</returns>
-        Task<TResponse> GetAsync<TResponse>(string route);
+        Task<TResponse> Get<TResponse>(string route);
 
         /// <summary>
         /// Issues a HTTP PUT to the route
@@ -46,7 +46,7 @@ namespace CoreLeaf.Net
         /// <param name="route">the route to issue the HTTP PUT against</param>
         /// <param name="body">The body of the request</param>
         /// <returns>the response from the http endpoint</returns>
-        Task<TResponse> PutAsync<TRequest, TResponse>(string route, TRequest body);
+        Task<TResponse> Put<TRequest, TResponse>(string route, TRequest body);
 
         /// <summary>
         /// Issues a HTTP POST to the route
@@ -56,7 +56,7 @@ namespace CoreLeaf.Net
         /// <param name="route">The route to issue the HTTP POST against</param>
         /// <param name="body">the body of the request</param>
         /// <returns>the response from the http endpoint</returns>
-        Task<TResponse> PostAsync<TRequest, TResponse>(string route, TRequest body);
+        Task<TResponse> Post<TRequest, TResponse>(string route, TRequest body);
 
         /// <summary>
         /// Issues a HTTP DELETE to the route
@@ -64,6 +64,6 @@ namespace CoreLeaf.Net
         /// <typeparam name="TResponse">the type of the response</typeparam>
         /// <param name="route">the route to issue the HTTP DELETE against</param>
         /// <returns>the response from the http endpoint</returns>
-        Task<TResponse> DeleteAsync<TResponse>(string route);
+        Task<TResponse> Delete<TResponse>(string route);
     }
 }

@@ -38,9 +38,13 @@ namespace CoreLeaf.Net
                 BaseAddress = BaseUri
             };
 
-            foreach (var kvp in HeaderProvider.GetHeaders())
+            var headers = HeaderProvider.GetHeaders();
+            if (headers != null)
             {
-                client.DefaultRequestHeaders.Add(kvp.Key, kvp.Value);
+                foreach (var kvp in HeaderProvider.GetHeaders())
+                {
+                    client.DefaultRequestHeaders.Add(kvp.Key, kvp.Value);
+                }
             }
 
             client.DefaultRequestHeaders.Accept.Clear();
@@ -48,14 +52,14 @@ namespace CoreLeaf.Net
             return client;
         }
 
-        public async Task<TResponse> GetAsync<TResponse>(string route)
+        public async Task<TResponse> Get<TResponse>(string route)
         {
             var client = SetupClient();
             var rawResponse = await client.GetAsync(route);
             var response = await ResponseDeserializer.Deserialize<TResponse>(rawResponse);
             return response;
         }
-        public async Task<TResponse> PutAsync<TRequest, TResponse>(string route, TRequest body)
+        public async Task<TResponse> Put<TRequest, TResponse>(string route, TRequest body)
         {
             var client = SetupClient();
 
@@ -65,7 +69,7 @@ namespace CoreLeaf.Net
             return response;
         }
 
-        public async Task<TResponse> PostAsync<TRequest, TResponse>(string route, TRequest body)
+        public async Task<TResponse> Post<TRequest, TResponse>(string route, TRequest body)
         {
             var client = SetupClient();
 
@@ -76,7 +80,7 @@ namespace CoreLeaf.Net
 
         }
 
-        public async Task<TResponse> DeleteAsync<TResponse>(string route)
+        public async Task<TResponse> Delete<TResponse>(string route)
         {
             var client = SetupClient();
             var rawResponse = await client.DeleteAsync(route);
