@@ -4,5 +4,6 @@
     {
         public static string NissanBaseUri { get { return nameof(NissanBaseUri); } }
         public static string CountryRoute { get { return nameof(CountryRoute); } }
+        public static string InitialAppRoute { get { return nameof(InitialAppRoute); } }
     }
 }

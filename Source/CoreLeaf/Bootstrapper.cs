@@ -5,6 +5,7 @@ using CoreLeaf.Encryption;
 using CoreLeaf.Interception;
 using CoreLeaf.Net;
 using CoreLeaf.NissanApi.Countries;
+using CoreLeaf.NissanApi.Initial;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Diagnostics;
@@ -46,6 +47,11 @@ namespace CoreLeaf
             //register the country client
             builder.RegisterType<CountryClient>().As<ICountryClient>()
                 .EnableInterfaceInterceptors()
+                .InterceptedBy(typeof(ConsoleInterceptor));
+
+            //register the initial app client
+            builder.RegisterType<InitialAppClient>().As<IInitialAppClient>()
+                .EnableClassInterceptors()
                 .InterceptedBy(typeof(ConsoleInterceptor));
 
             return builder.Build();
