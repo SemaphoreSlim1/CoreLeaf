@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CoreLeaf.Configuration;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,7 +21,8 @@ namespace CoreLeaf.Net
 
         private Func<HttpMessageHandler> _handlerFactory;
 
-        public RestClient(Func<HttpMessageHandler> handlerFactory,
+        public RestClient(IConfiguration config,
+            Func<HttpMessageHandler> handlerFactory,
             IHeaderProvider headerProvider,
             IContentEncoder contentEncoder,
             IResponseDeserializer responseDeserializer)
@@ -28,7 +31,9 @@ namespace CoreLeaf.Net
             HeaderProvider = headerProvider;
             ContentEncoder = contentEncoder;
             ResponseDeserializer = responseDeserializer;
-            Timeout = TimeSpan.FromSeconds(2);
+
+            var timeoutString = config[ConfigurationKeys.DefaultHttpTimeout];
+            Timeout = TimeSpan.Parse(timeoutString);
         }
 
         protected HttpClient SetupClient()

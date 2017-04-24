@@ -14,9 +14,10 @@ namespace CoreLeaf.NissanApi.Countries
         {
         }
 
-        public async Task<IDictionary<string, bool>> GetSettingsAsync(string apiKey, CancellationToken cancelToken)
+        public async Task<IDictionary<string, bool>> GetSettingsAsync(CancellationToken cancelToken)
         {
             var route = _config[ConfigurationKeys.CountryRoute];
+            var apiKey = _config[ConfigurationKeys.NissanApiKey];
 
             var bodyArgs = new List<KeyValuePair<string, string>>();
 
