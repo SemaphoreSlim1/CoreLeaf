@@ -9,6 +9,6 @@ namespace CoreLeaf.NissanApi.Countries
     {
         [BeforeMessage("About to get settings...")]
         [AfterMessage("Retrieved settings")]
-        Task<IDictionary<string, bool>> GetSettingsAsync(string apiKey, CancellationToken cancelToken);
+        Task<IDictionary<string, bool>> GetSettingsAsync(CancellationToken cancelToken);
     }
 }

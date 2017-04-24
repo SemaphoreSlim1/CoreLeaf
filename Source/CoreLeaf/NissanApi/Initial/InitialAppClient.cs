@@ -19,11 +19,12 @@ namespace CoreLeaf.NissanApi.Initial
         public async Task<string> GetEncryptionTokenAsync(CancellationToken cancelToken)
         {
             var route = _config[ConfigurationKeys.InitialAppRoute];
+            var apiKey = _config[ConfigurationKeys.NissanApiKey];
 
             var bodyArgs = new List<KeyValuePair<string, string>>();
             bodyArgs.Add(new KeyValuePair<string, string>("cartype", string.Empty));
             bodyArgs.Add(new KeyValuePair<string, string>("custom_sessionid", string.Empty));
-            bodyArgs.Add(new KeyValuePair<string, string>("initial_app_strings", "geORNtsZe5I4lRGjG9GZiA"));
+            bodyArgs.Add(new KeyValuePair<string, string>("initial_app_strings", apiKey));
             bodyArgs.Add(new KeyValuePair<string, string>("tz", string.Empty));
             bodyArgs.Add(new KeyValuePair<string, string>("lg", "en-US"));
             bodyArgs.Add(new KeyValuePair<string, string>("DCMID", string.Empty));

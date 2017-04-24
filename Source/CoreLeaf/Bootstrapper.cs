@@ -6,6 +6,7 @@ using CoreLeaf.Interception;
 using CoreLeaf.Net;
 using CoreLeaf.NissanApi.Countries;
 using CoreLeaf.NissanApi.Initial;
+using CoreLeaf.NissanApi.Login;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Diagnostics;
@@ -51,6 +52,11 @@ namespace CoreLeaf
 
             //register the initial app client
             builder.RegisterType<InitialAppClient>().As<IInitialAppClient>()
+                .EnableClassInterceptors()
+                .InterceptedBy(typeof(ConsoleInterceptor));
+
+            //register login client
+            builder.RegisterType<LoginClient>().As<ILoginClient>()
                 .EnableClassInterceptors()
                 .InterceptedBy(typeof(ConsoleInterceptor));
 
