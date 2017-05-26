@@ -1,4 +1,6 @@
-﻿using CoreLeaf.Net;
+﻿using CoreLeaf.Configuration;
+using CoreLeaf.Net;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using Moq.Protected;
 using System;
@@ -67,11 +69,15 @@ namespace CoreLeaf.Tests.Net
 
         private RestClient CreateRestClient(Func<HttpMessageHandler> handlerFactory)
         {
+            var configMock = new Mock<IConfiguration>();
+            configMock.Setup(x => x[ConfigurationKeys.DefaultHttpTimeout]).Returns("00:00:02");
+            var config = configMock.Object;
+
             var headerProvider = Mock.Of<IHeaderProvider>();
             var contentEncoder = CreateContentEncoderStub();
             var responseDeserializer = CreateDeserializerStub();
 
-            var client = new RestClient(handlerFactory, headerProvider, contentEncoder, responseDeserializer);
+            var client = new RestClient(config, handlerFactory, headerProvider, contentEncoder, responseDeserializer);
             client.BaseUri = new Uri("https://unittest.com/");
 
             return client;
