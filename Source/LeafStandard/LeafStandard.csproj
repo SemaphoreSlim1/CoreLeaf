@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleAbstractions\ConsoleAbstractions.csproj" />
+    <ProjectReference Include="..\RestAbstractions.Json\RestAbstractions.Json.csproj" />
+    <ProjectReference Include="..\RestAbstractions\RestAbstractions.csproj" />
+  </ItemGroup>
+
+</Project>

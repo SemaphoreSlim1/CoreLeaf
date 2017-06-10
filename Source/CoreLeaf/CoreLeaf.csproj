@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleAbstractions.Autofac\ConsoleAbstractions.Autofac.csproj" />
+    <ProjectReference Include="..\LeafStandard\LeafStandard.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appSecrets.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

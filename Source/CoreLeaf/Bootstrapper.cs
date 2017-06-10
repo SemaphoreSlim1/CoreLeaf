@@ -1,16 +1,19 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
-using CoreLeaf.Console;
+using ConsoleAbstractions;
+using ConsoleAbstractions.Autofac.Interception;
+using CoreLeaf.Configuration;
 using CoreLeaf.Encryption;
-using CoreLeaf.Interception;
-using CoreLeaf.Net;
 using CoreLeaf.NissanApi.Countries;
 using CoreLeaf.NissanApi.Initial;
 using CoreLeaf.NissanApi.Login;
 using Microsoft.Extensions.Configuration;
+using RestAbstractions;
+using RestAbstractions.Json;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
+
 
 namespace CoreLeaf
 {
@@ -25,7 +28,8 @@ namespace CoreLeaf
                             .AddJsonFile("appSettings.json")
                             .AddJsonFile("appSecrets.json");
 
-            builder.RegisterInstance(configBuilder.Build()).As<IConfiguration>();
+            var config = configBuilder.Build();
+            builder.RegisterInstance(config).As<IConfiguration>();
 
             //build the app
             builder.RegisterType<App>();
@@ -40,24 +44,32 @@ namespace CoreLeaf
 
             //register the REST types
             builder.RegisterType<HttpClientHandler>().As<HttpMessageHandler>();
-            builder.RegisterType<RestClient>().As<IRestClient>();
-            builder.RegisterType<DefaultHeaderProvider>().As<IHeaderProvider>().SingleInstance();
+            builder.RegisterType<RestClient>().As<IRestClient>()
+                .WithParameter("baseUri", new Uri(config[ConfigurationKeys.NissanBaseUri]))
+                .WithParameter("timeout", TimeSpan.Parse(config[ConfigurationKeys.DefaultHttpTimeout]));
+
             builder.RegisterType<FormUrlContentEncoder>().As<IContentEncoder>().SingleInstance();
             builder.RegisterType<JsonResponseDeserializer>().As<IResponseDeserializer>().SingleInstance();
 
             //register the country client
             builder.RegisterType<CountryClient>().As<ICountryClient>()
+                .WithParameter("countryRoute", config[ConfigurationKeys.CountryRoute])
+                .WithParameter("apiKey", config[ConfigurationKeys.NissanApiKey])
                 .EnableInterfaceInterceptors()
                 .InterceptedBy(typeof(ConsoleInterceptor));
 
             //register the initial app client
             builder.RegisterType<InitialAppClient>().As<IInitialAppClient>()
-                .EnableClassInterceptors()
+                .WithParameter("initialAppRoute", config[ConfigurationKeys.InitialAppRoute])
+                .WithParameter("apiKey", config[ConfigurationKeys.NissanApiKey])
+                .EnableInterfaceInterceptors()
                 .InterceptedBy(typeof(ConsoleInterceptor));
 
             //register login client
             builder.RegisterType<LoginClient>().As<ILoginClient>()
-                .EnableClassInterceptors()
+                .WithParameter("loginRoute", config[ConfigurationKeys.LoginRoute])
+                .WithParameter("apiKey", config[ConfigurationKeys.NissanApiKey])
+                .EnableInterfaceInterceptors()
                 .InterceptedBy(typeof(ConsoleInterceptor));
 
             return builder.Build();
