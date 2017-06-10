@@ -8,6 +8,7 @@
         public static string CountryRoute { get { return nameof(CountryRoute); } }
         public static string InitialAppRoute { get { return nameof(InitialAppRoute); } }
         public static string LoginRoute { get { return nameof(LoginRoute); } }
+        public static string BatteryStatusRoute { get { return nameof(BatteryStatusRoute); } }
 
 
         //items contained in appSecrets.json

@@ -5,6 +5,6 @@ namespace RestAbstractions
 {
     public interface IResponseDeserializer
     {
-        Task<TResponse> DeserializeAsync<TResponse>(HttpResponseMessage response);
+        Task<RestResponse<T>> DeserializeAsync<T>(HttpResponseMessage response);
     }
 }

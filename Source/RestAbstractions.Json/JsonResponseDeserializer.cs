@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using RestAbstractions;
+using System;
 
 namespace RestAbstractions.Json
 {
@@ -14,11 +15,25 @@ namespace RestAbstractions.Json
             _settings = new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace };
         }
         
-        public async Task<TResponse> DeserializeAsync<TResponse>(HttpResponseMessage response)
+        public async Task<RestResponse<T>> DeserializeAsync<T>(HttpResponseMessage rawResponse)
         {
-            var responseString = await response.Content.ReadAsStringAsync();
+            RestResponse<T> response;
 
-            return JsonConvert.DeserializeObject<TResponse>(responseString, _settings);
+            var content = await rawResponse.Content.ReadAsStringAsync();
+
+            T data = default(T);
+
+            try
+            {
+                data = JsonConvert.DeserializeObject<T>(content, _settings);
+            }catch(Exception ex)
+            { }
+            finally
+            {
+                response = new RestResponse<T>(data, content, rawResponse);
+            }
+
+            return response;
         }
     }
 }

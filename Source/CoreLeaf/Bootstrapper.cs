@@ -7,6 +7,7 @@ using CoreLeaf.Encryption;
 using CoreLeaf.NissanApi.Countries;
 using CoreLeaf.NissanApi.Initial;
 using CoreLeaf.NissanApi.Login;
+using LeafStandard.NissanApi.Status;
 using Microsoft.Extensions.Configuration;
 using RestAbstractions;
 using RestAbstractions.Json;
@@ -68,6 +69,13 @@ namespace CoreLeaf
             //register login client
             builder.RegisterType<LoginClient>().As<ILoginClient>()
                 .WithParameter("loginRoute", config[ConfigurationKeys.LoginRoute])
+                .WithParameter("apiKey", config[ConfigurationKeys.NissanApiKey])
+                .EnableInterfaceInterceptors()
+                .InterceptedBy(typeof(ConsoleInterceptor));
+
+            //register battery status client
+            builder.RegisterType<BatteryStatusClient>().As<IBatteryStatusClient>()
+                .WithParameter("batteryStatusRoute", config[ConfigurationKeys.BatteryStatusRoute])
                 .WithParameter("apiKey", config[ConfigurationKeys.NissanApiKey])
                 .EnableInterfaceInterceptors()
                 .InterceptedBy(typeof(ConsoleInterceptor));

@@ -1,4 +1,5 @@
-﻿using RestAbstractions;
+﻿using LeafStandard.NissanApi;
+using RestAbstractions;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -34,16 +35,16 @@ namespace CoreLeaf.NissanApi
             return ExtractResponse(restResponse);
         }        
 
-        protected async Task<TResponse> PutAsync<TResponse>(string route, IEnumerable<KeyValuePair<string, string>> body, CancellationToken cancelToken)
+        protected async Task<TResponse> PutAsync<TResponse>(string route, BodyArgs body, CancellationToken cancelToken)
         {
-            var restResponse = await _client.PutAsync<IEnumerable<KeyValuePair<string, string>>, TResponse>(route, body, cancelToken);
+            var restResponse = await _client.PutAsync<IEnumerable<KeyValuePair<string, string>>, TResponse>(route, body.Args, cancelToken);
 
             return ExtractResponse(restResponse);
         }
 
-        protected async Task<TResponse> PostAsync<TResponse>(string route, IEnumerable<KeyValuePair<string, string>> body, CancellationToken cancelToken)
+        protected async Task<TResponse> PostAsync<TResponse>(string route, BodyArgs body, CancellationToken cancelToken)
         {
-            var restResponse = await _client.PostAsync<IEnumerable<KeyValuePair<string, string>>, TResponse>(route, body, cancelToken);
+            var restResponse = await _client.PostAsync<IEnumerable<KeyValuePair<string, string>>, TResponse>(route, body.Args, cancelToken);
 
             return ExtractResponse(restResponse);
         }

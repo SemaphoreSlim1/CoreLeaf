@@ -1,4 +1,5 @@
-﻿using RestAbstractions;
+﻿using LeafStandard.NissanApi;
+using RestAbstractions;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,18 +17,18 @@ namespace CoreLeaf.NissanApi.Initial
         }
 
         public async Task<string> GetEncryptionTokenAsync(CancellationToken cancelToken)
-        {            
-            var bodyArgs = new List<KeyValuePair<string, string>>();
-            bodyArgs.Add(new KeyValuePair<string, string>("cartype", string.Empty));
-            bodyArgs.Add(new KeyValuePair<string, string>("custom_sessionid", string.Empty));
-            bodyArgs.Add(new KeyValuePair<string, string>("initial_app_strings", _apiKey));
-            bodyArgs.Add(new KeyValuePair<string, string>("tz", string.Empty));
-            bodyArgs.Add(new KeyValuePair<string, string>("lg", "en-US"));
-            bodyArgs.Add(new KeyValuePair<string, string>("DCMID", string.Empty));
-            bodyArgs.Add(new KeyValuePair<string, string>("VIN", string.Empty));
-            bodyArgs.Add(new KeyValuePair<string, string>("RegionCode", "NNA"));
+        {
+            var args = new BodyArgs();
+            args.Add("cartype");
+            args.Add("custom_sessionid");
+            args.Add("initial_app_strings", _apiKey);
+            args.Add("tz");
+            args.Add("lg", "en-US");
+            args.Add("DCMID");
+            args.Add("VIN");
+            args.Add("RegionCode", "NNA");
             
-            var response = await PostAsync<InitialAppResponse>(_initialAppRoute, bodyArgs, cancelToken);
+            var response = await PostAsync<InitialAppResponse>(_initialAppRoute, args, cancelToken);
 
             return response.EncryptionKey;
         }

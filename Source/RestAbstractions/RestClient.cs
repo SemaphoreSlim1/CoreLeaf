@@ -45,9 +45,8 @@ namespace RestAbstractions
         public async Task<RestResponse<T>> GetAsync<T>(string route, CancellationToken cancelToken)
         {
             var rawResponse = await _client.GetAsync(route, cancelToken);
-            var data = await ResponseDeserializer.DeserializeAsync<T>(rawResponse);
-
-            var response = new RestResponse<T>(data,rawResponse);
+            var response = await ResponseDeserializer.DeserializeAsync<T>(rawResponse);
+                       
             return response;
         }
 
@@ -55,9 +54,8 @@ namespace RestAbstractions
         {
             var requestContent = ContentEncoder.Encode(body);
             var rawResponse = await _client.PutAsync(route, requestContent, cancelToken);
-            var data = await ResponseDeserializer.DeserializeAsync<TResponse>(rawResponse);
+            var response = await ResponseDeserializer.DeserializeAsync<TResponse>(rawResponse);
 
-            var response = new RestResponse<TResponse>(data, rawResponse);
             return response;
         }
 
@@ -65,9 +63,8 @@ namespace RestAbstractions
         {
             var requestContent = ContentEncoder.Encode(body);
             var rawResponse = await _client.PostAsync(route, requestContent, cancelToken);
-            var data = await ResponseDeserializer.DeserializeAsync<TResponse>(rawResponse);
+            var response = await ResponseDeserializer.DeserializeAsync<TResponse>(rawResponse);
 
-            var response = new RestResponse<TResponse>(data, rawResponse);
             return response;
         }
 
@@ -75,8 +72,8 @@ namespace RestAbstractions
         {
             var rawResponse = await _client.DeleteAsync(route, cancelToken);
             var data = await ResponseDeserializer.DeserializeAsync<T>(rawResponse);
-            
-            var response = new RestResponse<T>(data, rawResponse);
+            var response = await ResponseDeserializer.DeserializeAsync<T>(rawResponse);
+
             return response;
         }
     }

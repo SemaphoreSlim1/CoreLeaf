@@ -6,6 +6,8 @@ using CoreLeaf.NissanApi.Login;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
+using LeafStandard.NissanApi.Status;
 
 namespace CoreLeaf
 {
@@ -16,17 +18,20 @@ namespace CoreLeaf
         private readonly ICountryClient _countryClient;
         private readonly IInitialAppClient _initialAppClient;
         private readonly ILoginClient _loginClient;
+        private readonly IBatteryStatusClient _batteryStatusClient;
 
         public App(IConfiguration config, IConsole console, 
             ICountryClient countryClient, 
             IInitialAppClient initialAppClient,
-            ILoginClient loginClient)
+            ILoginClient loginClient,
+            IBatteryStatusClient batteryStatusClient)
         {
             _config = config;
             _console = console;
             _countryClient = countryClient;
             _initialAppClient = initialAppClient;
             _loginClient = loginClient;
+            _batteryStatusClient = batteryStatusClient;
         }
 
         public async Task Run(string[] args)
@@ -40,6 +45,10 @@ namespace CoreLeaf
             var password = _config[ConfigurationKeys.Password];
 
             var result = await _loginClient.LoginAsync(encryptionToken, userName, password, _console.CancelToken);
+
+            var sessionId = result.VehicleInfos.Select(vi => vi.SessionId).First(x => string.IsNullOrWhiteSpace(x) == false);
+
+            var batteryStatus = await _batteryStatusClient.GetStatusAsync(sessionId, _console.CancelToken);
             
 
 

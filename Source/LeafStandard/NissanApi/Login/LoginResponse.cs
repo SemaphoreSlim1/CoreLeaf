@@ -18,6 +18,9 @@ namespace CoreLeaf.NissanApi.Login
 
         [JsonProperty("vin")]
         public string Vin { get; set; }
+
+        [JsonProperty("custom_sessionid")]
+        public string SessionId { get; set; }
     }
 
     public class VehicleProfile
@@ -98,7 +101,7 @@ namespace CoreLeaf.NissanApi.Login
         public int Status { get; set; }
 
         [JsonProperty("sessionId")]
-        public string SessionId { get; set; }
+        public Guid SessionGuid { get; set; }
 
         [JsonProperty("VehicleInfoList")]
         [JsonConverter(typeof(VehicleInfoListConverter))]
